@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_split_view/multi_split_view.dart';
+import 'package:tranzdoc/widget/document.dart';
 import 'package:tranzdoc/widget/editer.dart';
 
 void main() {
@@ -44,62 +45,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Widget> _widgetsList = [];
   int index = -1;
-
-  @override
-  void initState() {
-    for (int i = 0; i < 5; i++) {
-      _widgetsList.add(
-        // ignore: prefer_const_constructors
-        Text.rich(
-          const TextSpan(
-            text: 'Hello, ',
-            style: TextStyle(fontSize: 20),
-            children: <TextSpan>[
-              TextSpan(
-                text: 'world',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              TextSpan(text: '!'),
-            ],
-          ),
-        ),
-      );
-    }
-    super.initState();
-  }
-
-  void _handleTap(Widget thisWidget) {
-    int index = _widgetsList.indexOf(thisWidget);
-    setState(() {
-      _widgetsList.insert(
-        index + 1,
-        Text.rich(
-          TextSpan(
-            text: 'New widget added after widget $index',
-            style: const TextStyle(fontSize: 16),
-          ),
-        ),
-      );
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     var multiSplitView = MultiSplitView(children: [
-      SingleChildScrollView(
-        child: Column(
-          children: _widgetsList
-              .map(
-                (widget) => GestureDetector(
-                  onTap: () => _handleTap(widget),
-                  child: widget,
-                ),
-              )
-              .toList(),
-        ),
-      ),
+      const DocWidget(),
       Editor(index),
     ]);
 
