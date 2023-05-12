@@ -1,10 +1,10 @@
-import 'dart:ui';
-
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 import 'package:tranzdoc/widget/document.dart';
-import 'package:tranzdoc/widget/editer.dart';
+import 'package:tranzdoc/widget/editer_view.dart';
+
+import 'cubit/line_cubit.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,39 +30,36 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHome2Page(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class MyHome2Page extends StatelessWidget {
+  const MyHome2Page({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int index = -1;
-
-  @override
   Widget build(BuildContext context) {
-    var multiSplitView = MultiSplitView(children: [
-      const DocWidget(),
-      Editor(index),
+    var multiSplitView = MultiSplitView(children: const [
+      DocWidget(),
+      EditorView(),
     ]);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(title),
       ),
       body: MultiSplitViewTheme(
-          data: MultiSplitViewThemeData(
-              dividerPainter: DividerPainters.background(
-                  color: Colors.grey[200], highlightedColor: Colors.grey[800])),
-          child: multiSplitView),
+        data: MultiSplitViewThemeData(
+            dividerPainter: DividerPainters.background(
+                color: Colors.grey[200], highlightedColor: Colors.grey[800])),
+        child: BlocProvider(
+          create: (context) => LineCubit(),
+          child: multiSplitView,
+        ),
+      ),
     );
   }
 }
